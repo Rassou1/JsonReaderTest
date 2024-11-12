@@ -2,70 +2,35 @@
 
 using System;
 using Newtonsoft.Json.Linq;
-//using Newtonsoft.Json;  //For .NET use
-using System.Text.Json;	//For non-.NET use
+using Newtonsoft.Json;  //For .NET use
 
 
 public class JSONReader
 {
-    public static JObject wholeJsonFile;
-    public static string currentFileName;
-    public BanRecord banRecord;
-    
+    //I need to implement try/catch here just for error handling that won't break the plugin. Will do soon, this just works for now.
     public JSONReader()
 	{
         
     }
 
-   /* public static void ReadJson(string fileName)
+    public static Dictionary<string, BanRecord> ReadJson(string fileName)
     {
-        using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
-        {
-            Console.WriteLine(fileName);
-            string steamIDToBan = Console.ReadLine();
-            if (steamIDToBan != null)
-            {
-                GetBanRecord(steamIDToBan, fs);
-            }
-        }
+        string jsonContent = File.ReadAllText(fileName);
+
+        var fullDictionary = JsonConvert.DeserializeObject<Dictionary<string, BanRecord>>(jsonContent);
+
+        return fullDictionary;
 
     }
 
-    public static void GetBanRecord(string steamIDToBan, FileStream fileStream)
+    public static void SaveBans(Dictionary<string, BanRecord> bans, string jsonFilePath)
     {
-        using (JsonDocument banRecordJson = JsonDocument.Parse(fileStream))
-        {
-            // Find the array of ban records
-            JsonElement root = banRecordJson.RootElement;
-            JsonElement records = root.GetProperty("records");
+        string fileToSave = JsonConvert.SerializeObject(bans, Formatting.Indented);
 
-            //Look through every record
-            foreach (JsonElement record in records.EnumerateArray())
-            {
-                // Check if the steamID of each record matches the player we're looking for
-                string steamID = record.GetProperty("steamID").GetString();
-                Console.WriteLine($"{steamID}");
-                if (steamID == steamIDToBan)
-                {
-                    // Deserialize the player
-                    BanRecord selectedPlayer = JsonSerializer.Deserialize<BanRecord>(record.GetRawText());
+        File.WriteAllText(jsonFilePath, fileToSave);
+    }
 
-                    // For testing purposes, just printing out the player's info to console for the moment.
-                    Console.WriteLine($"ID: {selectedPlayer.PlayerID}, Name: {selectedPlayer.Name}");
 
-                    if (selectedPlayer.Bans != null)
-                    {
-                        Console.WriteLine("Reasons:");
-                        foreach (var reason in selectedPlayer.Bans)
-                        {
-                            Console.WriteLine($"- {reason.Key}: {reason.Value}");
-                        }
-                    }
-                    break;
-                }
-            }
-        }
-    }*/
     //Below are old methods that separated the JSON file's contents into separate strings. Deprecated maybe.
 
 

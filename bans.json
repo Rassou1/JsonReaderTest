@@ -1,0 +1,19 @@
+{
+  "123456": {
+    "Bans": {
+      "Racism": 3,
+      "Sabotage": 3
+    },
+    "Name": null,
+    "PlayerID": "123456"
+  },
+  "789": {
+    "Bans": {
+      "Racism": 1,
+      "Sabotage": 2,
+      "Cheating": 1
+    },
+    "Name": null,
+    "PlayerID": "789"
+  }
+}
